@@ -28,141 +28,130 @@ namespace Heiner
         /// </summary>
         private void InitializeComponent()
         {
-            this.chartPictureBox = new System.Windows.Forms.PictureBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveTxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.chartTitleTextBox = new System.Windows.Forms.TextBox();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.chartPictureBox)).BeginInit();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
-            //
+            chartPictureBox = new System.Windows.Forms.PictureBox();
+            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            newDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            saveTxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            chartTitleTextBox = new System.Windows.Forms.TextBox();
+            openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)chartPictureBox).BeginInit();
+            menuStrip1.SuspendLayout();
+            SuspendLayout();
+            // 
             // chartPictureBox
-            //
-            this.chartPictureBox.Location = new System.Drawing.Point(0, 24);
-            this.chartPictureBox.Name = "chartPictureBox";
-            this.chartPictureBox.Size = new System.Drawing.Size(381, 303);
-            this.chartPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.chartPictureBox.TabIndex = 0;
-            this.chartPictureBox.TabStop = false;
-            //
+            // 
+            chartPictureBox.Location = new System.Drawing.Point(0, 28);
+            chartPictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chartPictureBox.Name = "chartPictureBox";
+            chartPictureBox.Size = new System.Drawing.Size(381, 303);
+            chartPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            chartPictureBox.TabIndex = 0;
+            chartPictureBox.TabStop = false;
+            // 
             // menuStrip1
-            //
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.optionsToolStripMenuItem,
-            this.refreshToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(381, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            //
+            // 
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, optionsToolStripMenuItem });
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            menuStrip1.Size = new System.Drawing.Size(444, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
+            // 
             // fileToolStripMenuItem
-            //
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importToolStripMenuItem,
-            this.newDataToolStripMenuItem,
-            this.saveTxtToolStripMenuItem,
-            this.saveToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.fileToolStripMenuItem.Text = "Datei";
-            //
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { importToolStripMenuItem, newDataToolStripMenuItem, saveTxtToolStripMenuItem, saveToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            fileToolStripMenuItem.Text = "Datei";
+            // 
             // importToolStripMenuItem
-            //
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.importToolStripMenuItem.Text = "Öffnen";
-            this.importToolStripMenuItem.Click += new System.EventHandler(this.ImportToolStripMenuItem_Click);
-            //
+            // 
+            importToolStripMenuItem.Name = "importToolStripMenuItem";
+            importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            importToolStripMenuItem.Text = "Öffnen";
+            importToolStripMenuItem.Click += ImportToolStripMenuItem_Click;
+            // 
             // newDataToolStripMenuItem
-            //
-            this.newDataToolStripMenuItem.Name = "newDataToolStripMenuItem";
-            this.newDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.newDataToolStripMenuItem.Text = "Neu";
-            this.newDataToolStripMenuItem.Click += new System.EventHandler(this.NewDataToolStripMenuItem_Click);
-            //
+            // 
+            newDataToolStripMenuItem.Name = "newDataToolStripMenuItem";
+            newDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            newDataToolStripMenuItem.Text = "Neu";
+            newDataToolStripMenuItem.Click += NewDataToolStripMenuItem_Click;
+            // 
             // saveTxtToolStripMenuItem
-            //
-            this.saveTxtToolStripMenuItem.Name = "saveTxtToolStripMenuItem";
-            this.saveTxtToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveTxtToolStripMenuItem.Text = "Speichern (TXT)";
-            this.saveTxtToolStripMenuItem.Click += new System.EventHandler(this.SaveTxtToolStripMenuItem_Click);
-            //
+            // 
+            saveTxtToolStripMenuItem.Name = "saveTxtToolStripMenuItem";
+            saveTxtToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveTxtToolStripMenuItem.Text = "Speichern (TXT)";
+            saveTxtToolStripMenuItem.Click += SaveTxtToolStripMenuItem_Click;
+            // 
             // saveToolStripMenuItem
-            //
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveToolStripMenuItem.Text = "Speichern (PNG)";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
-            //
-            // refreshToolStripMenuItem
-            //
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
-            this.refreshToolStripMenuItem.Text = "Aktualisieren";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.RefreshToolStripMenuItem_Click);
-            //
-            // openFileDialog
-            //
-            this.openFileDialog.FileName = "openFileDialog1";
-            //
-            // saveFileDialog
-            //
-            this.saveFileDialog.DefaultExt = "png";
-            this.saveFileDialog.FileName = "save.png";
-            this.saveFileDialog.Filter = "PNG-Dateien (*.png)|*.png|Alle Dateien (*.*)|*.*";
-            //
-            // chartTitleTextBox
-            //
-            this.chartTitleTextBox.Location = new System.Drawing.Point(199, 0);
-            this.chartTitleTextBox.Name = "chartTitleTextBox";
-            this.chartTitleTextBox.Size = new System.Drawing.Size(28, 20);
-            this.chartTitleTextBox.TabIndex = 2;
-            this.chartTitleTextBox.Text = "R1";
-            //
-            // openToolStripMenuItem
-            //
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openToolStripMenuItem.Text = "Öffnen";
-            //
+            // 
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveToolStripMenuItem.Text = "Speichern (PNG)";
+            saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
+            // 
             // optionsToolStripMenuItem
-            //
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Optionen";
-            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItem_Click);
-            //
+            // 
+            optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            optionsToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            optionsToolStripMenuItem.Text = "Optionen";
+            optionsToolStripMenuItem.Click += OptionsToolStripMenuItem_Click;
+            // 
+            // openFileDialog
+            // 
+            openFileDialog.FileName = "openFileDialog1";
+            // 
+            // saveFileDialog
+            // 
+            saveFileDialog.DefaultExt = "png";
+            saveFileDialog.FileName = "save.png";
+            saveFileDialog.Filter = "PNG-Dateien (*.png)|*.png|Alle Dateien (*.*)|*.*";
+            // 
+            // chartTitleTextBox
+            // 
+            chartTitleTextBox.Location = new System.Drawing.Point(232, 0);
+            chartTitleTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chartTitleTextBox.Name = "chartTitleTextBox";
+            chartTitleTextBox.Size = new System.Drawing.Size(32, 23);
+            chartTitleTextBox.TabIndex = 2;
+            chartTitleTextBox.Text = "R1";
+            // 
+            // openToolStripMenuItem
+            // 
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            openToolStripMenuItem.Text = "Öffnen";
+            // 
             // MainForm
-            //
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(381, 327);
-            this.Controls.Add(this.chartTitleTextBox);
-            this.Controls.Add(this.chartPictureBox);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Diagramm";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.chartPictureBox)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            ClientSize = new System.Drawing.Size(444, 377);
+            Controls.Add(chartTitleTextBox);
+            Controls.Add(chartPictureBox);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "MainForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "Diagramm";
+            Load += MainForm_Load;
+            ((System.ComponentModel.ISupportInitialize)chartPictureBox).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
         #endregion
@@ -176,7 +165,6 @@ namespace Heiner
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.TextBox chartTitleTextBox;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
