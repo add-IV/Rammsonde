@@ -6,11 +6,11 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
-
+using System.Runtime.Versioning;
 
 namespace Heiner
-
 {
+    [SupportedOSPlatform("windows")]
     public partial class Form1 : Form
     {
         public Form1()
@@ -23,7 +23,7 @@ namespace Heiner
             if (Properties.Settings.Default.FilePath == "")
             {
                 Properties.Settings.Default.FilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                MessageBox.Show("Bitte Wähle ein Standartverzeichniss in den Optionen","Verzeichniss setzen",MessageBoxButtons.OK);
+                MessageBox.Show("Bitte Wähle ein Standartverzeichniss in den Optionen", "Verzeichniss setzen", MessageBoxButtons.OK);
             }
             saveFileDialog1.InitialDirectory = Properties.Settings.Default.FilePath;
             openFileDialog1.InitialDirectory = Properties.Settings.Default.FilePath;
@@ -43,9 +43,9 @@ namespace Heiner
 
         private void Frm2_Form2Closing(object sender, EventArgs e)
         {
-            CreateRammsonde2(this,e);
+            CreateRammsonde2(this, e);
         }
-        private void DrawRammsonde(List<List<int>> data,int max,object sender, EventArgs e)
+        private void DrawRammsonde(List<List<int>> data, int max, object sender, EventArgs e)
         {
 
             int od = 70, ud = 50, ld = 50, rd = 50, ks = 5, delta = 6, td = 20, ex = 2, MinX = Properties.Settings.Default.MinX;
@@ -143,14 +143,14 @@ namespace Heiner
                 }
                 data.Add(temp);
             }
-            DrawRammsonde(data,max,this,e);
+            DrawRammsonde(data, max, this, e);
         }
 
         private void CreateRammsonde2(object sender, EventArgs e)
         {
             List<List<int>> data = new List<List<int>>();
             int max = 0;
-            foreach (KeyValuePair<int,int> el in MyGlobals.data1)
+            foreach (KeyValuePair<int, int> el in MyGlobals.data1)
             {
                 List<int> temp = new List<int>
                 {
@@ -163,7 +163,7 @@ namespace Heiner
                 }
                 data.Add(temp);
             }
-            if(data.Count != 0)DrawRammsonde(data, max, this, e);
+            if (data.Count != 0) DrawRammsonde(data, max, this, e);
         }
 
         private void ImportToolStripMenuItem_Click(object sender, EventArgs e)

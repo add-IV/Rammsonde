@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Versioning;
 
 namespace Heiner
 {
+    [SupportedOSPlatform("windows")]
     public partial class Form2 : Form
     {
         public Form2()
@@ -48,7 +43,8 @@ namespace Heiner
             if (!MyGlobals.data1.ContainsKey(im))
             {
                 MyGlobals.data1.Add(im, (int)numericUpDown1.Value);
-            } else
+            }
+            else
             {
                 MyGlobals.data1[im] = (int)numericUpDown1.Value;
             }
@@ -62,7 +58,7 @@ namespace Heiner
                     listView1.Items[i].Remove();
                 }
             }
-            if(listView1.Items.Count > 0)
+            if (listView1.Items.Count > 0)
             {
                 textBox1.Text = (int.Parse(listView1.Items[listView1.Items.Count - 1].Name) + 10).ToString();
             }
@@ -99,7 +95,7 @@ namespace Heiner
 
         private void NumericUpDown1_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = e.SuppressKeyPress = true;
             }
