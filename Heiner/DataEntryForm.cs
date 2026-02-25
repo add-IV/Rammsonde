@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Runtime.Versioning;
@@ -6,120 +7,109 @@ using System.Runtime.Versioning;
 namespace Heiner
 {
     [SupportedOSPlatform("windows")]
-    public partial class Form2 : Form
+    public partial class DataEntryForm : Form
     {
-        public Form2()
+        private const int DepthStepCm = 10;
+        private readonly SortedDictionary<int, int> _data = [];
+
+        public DataEntryForm()
         {
             InitializeComponent();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
+        private void DataEntryForm_Load(object sender, EventArgs e)
         {
-            textBox1.Text = "10";
-            saveFileDialog1.InitialDirectory = Properties.Settings.Default.FilePath;
+            depthTextBox.Text = DepthStepCm.ToString();
+            saveFileDialog.InitialDirectory = Properties.Settings.Default.FilePath;
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void AddEntryButton_Click(object sender, EventArgs e)
         {
-            int im = int.Parse(textBox1.Text);
-            String m = im.ToString(), s = numericUpDown1.Text;
-            ListViewItem list1 = new ListViewItem();
-            list1.Name = m;
-            list1.SubItems.Add(m);
-            list1.SubItems.Add(s);
-            if (!listView1.Items.ContainsKey(m))
-            {
-                listView1.Items.Add(list1);
-            }
-            else
-            {
-                listView1.Items[listView1.Items.IndexOfKey(m)].SubItems[2].Text = s;
-            }
-            textBox1.Text = (im + 10).ToString();
-            listView1.Items[listView1.Items.IndexOfKey(m)].EnsureVisible();
-            numericUpDown1.Select();
-            numericUpDown1.Select(0, numericUpDown1.Text.Length);
-
-            if (!MyGlobals.data1.ContainsKey(im))
-            {
-                MyGlobals.data1.Add(im, (int)numericUpDown1.Value);
-            }
-            else
-            {
-                MyGlobals.data1[im] = (int)numericUpDown1.Value;
-            }
-        }
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            for (int i = listView1.Items.Count - 1; i >= 0; i--)
-            {
-                if (listView1.Items[i].Selected)
-                {
-                    listView1.Items[i].Remove();
-                }
-            }
-            if (listView1.Items.Count > 0)
-            {
-                textBox1.Text = (int.Parse(listView1.Items[listView1.Items.Count - 1].Name) + 10).ToString();
-            }
-            else
-            {
-                textBox1.Text = "10";
-            }
+            int depthCm = (entriesDataGridView.Rows.Count + 1) * DepthStepCm;
+            int seconds = (int)speedNumericUpDown.Value;
+            entriesDataGridView.Rows.Add(depthCm, seconds);
+            _data[depthCm] = seconds;
+            depthTextBox.Text = (depthCm + DepthStepCm).ToString();
+            entriesDataGridView.FirstDisplayedScrollingRowIndex = entriesDataGridView.Rows.Count - 1;
+            speedNumericUpDown.Select();
+            speedNumericUpDown.Select(0, speedNumericUpDown.Text.Length);
+            PlotRequested?.Invoke(this, new MeasurementEventArgs(_data));
         }
 
-        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteButton_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Alle Einträge löschen?", "New", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
+            if (entriesDataGridView.Rows.Count == 0)
+                return;
+            int lastIndex = entriesDataGridView.Rows.Count - 1;
+            int depthCm = (lastIndex + 1) * DepthStepCm;
+            _data.Remove(depthCm);
+            entriesDataGridView.Rows.RemoveAt(lastIndex);
+            depthTextBox.Text = entriesDataGridView.Rows.Count > 0
+                ? (entriesDataGridView.Rows.Count * DepthStepCm + DepthStepCm).ToString()
+                : DepthStepCm.ToString();
+            PlotRequested?.Invoke(this, new MeasurementEventArgs(_data));
+        }
+
+        private void EntriesDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 1 || e.RowIndex < 0) return;
+            int depthCm = (e.RowIndex + 1) * DepthStepCm;
+            if (int.TryParse(entriesDataGridView.Rows[e.RowIndex].Cells[1].Value?.ToString(), out int seconds))
+                _data[depthCm] = seconds;
+        }
+
+        private void EntriesDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 1)
+                PlotRequested?.Invoke(this, new MeasurementEventArgs(_data));
+        }
+
+        public void PromptReset()
+        {
+            if (MessageBox.Show("Alle Einträge löschen?", "Neu", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                listView1.Items.Clear();
-                textBox1.Text = "10";
+                entriesDataGridView.Rows.Clear();
+                _data.Clear();
+                depthTextBox.Text = DepthStepCm.ToString();
             }
         }
 
-        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        public void PromptSaveTxt()
         {
-            saveFileDialog1.ShowDialog();
-            if (saveFileDialog1.FileName != "")
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                using (var tw = new StreamWriter(saveFileDialog1.FileName))
-                {
-                    foreach (ListViewItem item in listView1.Items)
-                    {
-                        tw.WriteLine(item.SubItems[1].Text + " " + item.SubItems[2].Text);
-                    }
-                }
+                using var writer = new StreamWriter(saveFileDialog.FileName);
+                foreach (DataGridViewRow row in entriesDataGridView.Rows)
+                    writer.WriteLine(row.Cells[0].Value + " " + row.Cells[1].Value);
             }
         }
 
-        private void NumericUpDown1_KeyDown(object sender, KeyEventArgs e)
+        private void SpeedNumericUpDown_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                e.Handled = e.SuppressKeyPress = true;
+        }
+
+        private void SpeedNumericUpDown_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = e.SuppressKeyPress = true;
+                AddEntryButton_Click(sender, e);
             }
         }
 
-        private void NumericUpDown1_KeyUp(object sender, KeyEventArgs e)
+        private void DataEntryForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.Handled = e.SuppressKeyPress = true;
-                Button1_Click(sender, e);
-            }
-
+            if (e.CloseReason == CloseReason.UserClosing)
+                e.Cancel = true;
         }
 
-        public event EventHandler Button3Click;
+        public event EventHandler<MeasurementEventArgs> PlotRequested;
+    }
 
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            EventHandler handler = Button3Click;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
-        }
+    public class MeasurementEventArgs(SortedDictionary<int, int> data) : EventArgs
+    {
+        public SortedDictionary<int, int> Data { get; } = data;
     }
 }

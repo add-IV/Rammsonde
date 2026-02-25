@@ -1,36 +1,43 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Runtime.Versioning;
 
 namespace Heiner
 {
     [SupportedOSPlatform("windows")]
-    public partial class Form3 : Form
+    public partial class OptionsForm : Form
     {
-        public Form3()
+        public OptionsForm()
         {
             InitializeComponent();
         }
 
-        private void Form3_Load(object sender, EventArgs e)
+        private void OptionsForm_Load(object sender, EventArgs e)
         {
-            textBox1.Text = Properties.Settings.Default.FilePath;
-            textBox2.Text = Properties.Settings.Default.MinX.ToString();
+            txtFilePath.Text = Properties.Settings.Default.FilePath;
+            txtMinX.Text = Properties.Settings.Default.MinX.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnBrowse_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog.SelectedPath))
             {
-                textBox1.Text = folderBrowserDialog1.SelectedPath;
+                txtFilePath.Text = folderBrowserDialog.SelectedPath;
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.FilePath = textBox1.Text;
-            Properties.Settings.Default.MinX = int.Parse(textBox2.Text);
+            if (!int.TryParse(txtMinX.Text, out int minX))
+            {
+                MessageBox.Show("X-Achse muss eine ganze Zahl sein.", "Ungültige Eingabe", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Properties.Settings.Default.FilePath = txtFilePath.Text;
+            Properties.Settings.Default.MinX = minX;
             Properties.Settings.Default.Save();
+            Close();
         }
     }
 }
