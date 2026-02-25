@@ -18,6 +18,7 @@ namespace Heiner
         public MainForm()
         {
             InitializeComponent();
+            DrawRammsondeFromData([]);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -58,21 +59,23 @@ namespace Heiner
             {
                 graphics.DrawLine(pen, leftMargin, topMargin, leftMargin, ToPixelY(data.Count + extraRows));
                 graphics.DrawLine(pen, leftMargin, topMargin, ToPixelX(max), topMargin);
-                graphics.DrawLine(pen, ToPixelX(data[0].value), topMargin, ToPixelX(data[0].value), ToPixelY(1));
-
-                for (int i = 10; i < data.Count + extraRows + 1; i += 10)
-                    graphics.DrawLine(pen, leftMargin - tickSize, ToPixelY(i), leftMargin, ToPixelY(i));
-
-                for (int j = 1; j < data.Count; j++)
+                if (data.Count > 0)
                 {
-                    int i = data[j].depth / 10;
-                    int xCurr = data[j].value == 0 ? ToPixelX(data[j].value) + 1 : ToPixelX(data[j].value);
-                    graphics.DrawLine(pen, ToPixelX(data[j - 1].value), ToPixelY(i - 1), xCurr, ToPixelY(i - 1));
-                    graphics.DrawLine(pen, xCurr, ToPixelY(i - 1), xCurr, ToPixelY(i));
+                    graphics.DrawLine(pen, ToPixelX(data[0].value), topMargin, ToPixelX(data[0].value), ToPixelY(1));
+
+                    for (int i = 10; i < data.Count + extraRows + 1; i += 10)
+                        graphics.DrawLine(pen, leftMargin - tickSize, ToPixelY(i), leftMargin, ToPixelY(i));
+
+                    for (int j = 1; j < data.Count; j++)
+                    {
+                        int i = data[j].depth / 10;
+                        int xCurr = data[j].value == 0 ? ToPixelX(data[j].value) + 1 : ToPixelX(data[j].value);
+                        graphics.DrawLine(pen, ToPixelX(data[j - 1].value), ToPixelY(i - 1), xCurr, ToPixelY(i - 1));
+                        graphics.DrawLine(pen, xCurr, ToPixelY(i - 1), xCurr, ToPixelY(i));
+                    }
+
+                    graphics.DrawLine(pen, ToPixelX(data[^1].value), ToPixelY(data[^1].depth / 10), leftMargin + 1, ToPixelY(data[^1].depth / 10));
                 }
-
-                graphics.DrawLine(pen, ToPixelX(data[^1].value), ToPixelY(data[^1].depth / 10), leftMargin + 1, ToPixelY(data[^1].depth / 10));
-
                 for (int i = 0; i < max; i += 10)
                     graphics.DrawLine(pen, ToPixelX(i), topMargin - tickSize, ToPixelX(i), topMargin);
 
@@ -88,7 +91,8 @@ namespace Heiner
                 stringFormat.LineAlignment = StringAlignment.Center;
                 graphics.DrawString("[s]/[10cm]", font10, Brushes.Black, new PointF(width - rightMargin + pixelsPerUnit, topMargin), stringFormat);
                 graphics.DrawString("Endtiefe", font10, Brushes.Black, new PointF(leftMargin, height - bottomMargin + 15), stringFormat);
-                graphics.DrawString(((float)data[^1].depth / 100).ToString("n2") + " m", font10, Brushes.Black, new PointF(leftMargin, height - bottomMargin + 30), stringFormat);
+                if (data.Count > 0)
+                    graphics.DrawString(((float)data[^1].depth / 100).ToString("n2") + " m", font10, Brushes.Black, new PointF(leftMargin, height - bottomMargin + 30), stringFormat);
                 stringFormat.LineAlignment = StringAlignment.Far;
 
                 for (int i = 0; i < max; i += 10)
@@ -135,7 +139,6 @@ namespace Heiner
 
         private void DrawRammsondeFromData(SortedDictionary<int, int> source)
         {
-            if (source.Count == 0) return;
             List<(int depth, int value)> data = [];
             int max = 0;
             foreach (KeyValuePair<int, int> entry in source)

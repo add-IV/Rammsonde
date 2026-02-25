@@ -48,8 +48,9 @@ namespace Heiner
             // 
             chartPictureBox.Location = new System.Drawing.Point(0, 28);
             chartPictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chartPictureBox.MinimumSize = new System.Drawing.Size(300, 300);
             chartPictureBox.Name = "chartPictureBox";
-            chartPictureBox.Size = new System.Drawing.Size(381, 303);
+            chartPictureBox.Size = new System.Drawing.Size(300, 300);
             chartPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             chartPictureBox.TabIndex = 0;
             chartPictureBox.TabStop = false;
@@ -74,28 +75,28 @@ namespace Heiner
             // importToolStripMenuItem
             // 
             importToolStripMenuItem.Name = "importToolStripMenuItem";
-            importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            importToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             importToolStripMenuItem.Text = "Öffnen";
             importToolStripMenuItem.Click += ImportToolStripMenuItem_Click;
             // 
             // newDataToolStripMenuItem
             // 
             newDataToolStripMenuItem.Name = "newDataToolStripMenuItem";
-            newDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            newDataToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             newDataToolStripMenuItem.Text = "Neu";
             newDataToolStripMenuItem.Click += NewDataToolStripMenuItem_Click;
             // 
             // saveTxtToolStripMenuItem
             // 
             saveTxtToolStripMenuItem.Name = "saveTxtToolStripMenuItem";
-            saveTxtToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveTxtToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             saveTxtToolStripMenuItem.Text = "Speichern (TXT)";
             saveTxtToolStripMenuItem.Click += SaveTxtToolStripMenuItem_Click;
             // 
             // saveToolStripMenuItem
             // 
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             saveToolStripMenuItem.Text = "Speichern (PNG)";
             saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
             // 
