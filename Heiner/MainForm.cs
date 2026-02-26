@@ -7,6 +7,8 @@ using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Runtime.Versioning;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
 
 namespace Heiner
 {
@@ -14,6 +16,8 @@ namespace Heiner
     public partial class MainForm : Form
     {
         private DataEntryForm _dataEntryForm;
+        private List<(int depth, int value)> _renderData = [];
+        private int _renderMax = 0;
 
         public MainForm()
         {
@@ -33,29 +37,36 @@ namespace Heiner
 
             _dataEntryForm = new DataEntryForm();
             _dataEntryForm.PlotRequested += (_, args) => DrawRammsondeFromData(args.Data);
-            _dataEntryForm.Show(this);
+            _dataEntryForm.TopLevel = false;
+            _dataEntryForm.FormBorderStyle = FormBorderStyle.None;
+            _dataEntryForm.Dock = DockStyle.Fill;
+            dataEntryPanel.Controls.Add(_dataEntryForm);
+            _dataEntryForm.Show();
         }
 
-        private void DrawRammsonde(List<(int depth, int value)> data, int max)
+        private Bitmap RenderBitmap(List<(int depth, int value)> data, int max, int scale)
         {
-            int topMargin = 70, bottomMargin = 50, leftMargin = 50, rightMargin = 50, tickSize = 5, pixelsPerUnit = 6, titleY = 20, extraRows = 2, minX = Properties.Settings.Default.MinX;
+            int ppu = 6 * scale;
+            int topMargin = 70 * scale, bottomMargin = 50 * scale, leftMargin = 50 * scale, rightMargin = 50 * scale;
+            int tickSize = 5 * scale, titleY = 20 * scale, extraRows = 2;
+            int minX = Properties.Settings.Default.MinX;
 
             if (minX > max)
                 max = minX;
 
-            int ToPixelX(int v) => leftMargin + pixelsPerUnit * v;
-            int ToPixelY(int row) => topMargin + pixelsPerUnit * row;
+            int ToPixelX(int v) => leftMargin + ppu * v;
+            int ToPixelY(int row) => topMargin + ppu * row;
 
-            int width = max * pixelsPerUnit + 2 * leftMargin + rightMargin, height = (data.Count + extraRows) * pixelsPerUnit + topMargin + bottomMargin;
+            int width = max * ppu + 2 * leftMargin + rightMargin, height = (data.Count + extraRows) * ppu + topMargin + bottomMargin;
 
             Bitmap bitmap = new(width, height);
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
-            using (Pen pen = new(Color.Black, 1))
+            using (Pen pen = new(Color.Black, scale))
             using (StringFormat stringFormat = new())
-            using (Font font10 = new("Tahoma", 10))
-            using (Font font12 = new("Tahoma", 12))
-            using (Font font15 = new("Tahoma", 15))
+            using (Font font10 = new("Tahoma", 10 * scale))
+            using (Font font12 = new("Tahoma", 12 * scale))
+            using (Font font15 = new("Tahoma", 15 * scale))
             {
                 graphics.DrawLine(pen, leftMargin, topMargin, leftMargin, ToPixelY(data.Count + extraRows));
                 graphics.DrawLine(pen, leftMargin, topMargin, ToPixelX(max), topMargin);
@@ -69,12 +80,12 @@ namespace Heiner
                     for (int j = 1; j < data.Count; j++)
                     {
                         int i = data[j].depth / 10;
-                        int xCurr = data[j].value == 0 ? ToPixelX(data[j].value) + 1 : ToPixelX(data[j].value);
+                        int xCurr = data[j].value == 0 ? ToPixelX(data[j].value) + scale : ToPixelX(data[j].value);
                         graphics.DrawLine(pen, ToPixelX(data[j - 1].value), ToPixelY(i - 1), xCurr, ToPixelY(i - 1));
                         graphics.DrawLine(pen, xCurr, ToPixelY(i - 1), xCurr, ToPixelY(i));
                     }
 
-                    graphics.DrawLine(pen, ToPixelX(data[^1].value), ToPixelY(data[^1].depth / 10), leftMargin + 1, ToPixelY(data[^1].depth / 10));
+                    graphics.DrawLine(pen, ToPixelX(data[^1].value), ToPixelY(data[^1].depth / 10), leftMargin + scale, ToPixelY(data[^1].depth / 10));
                 }
                 for (int i = 0; i < max; i += 10)
                     graphics.DrawLine(pen, ToPixelX(i), topMargin - tickSize, ToPixelX(i), topMargin);
@@ -89,14 +100,14 @@ namespace Heiner
                 stringFormat.Alignment = StringAlignment.Center;
                 graphics.DrawString(chartTitleTextBox.Text, font15, Brushes.Black, new PointF(leftMargin, titleY), stringFormat);
                 stringFormat.LineAlignment = StringAlignment.Center;
-                graphics.DrawString("[s]/[10cm]", font10, Brushes.Black, new PointF(width - rightMargin + pixelsPerUnit, topMargin), stringFormat);
-                graphics.DrawString("Endtiefe", font10, Brushes.Black, new PointF(leftMargin, height - bottomMargin + 15), stringFormat);
+                graphics.DrawString("[s]/[10cm]", font10, Brushes.Black, new PointF(width - rightMargin + ppu, topMargin), stringFormat);
+                graphics.DrawString("Endtiefe", font10, Brushes.Black, new PointF(leftMargin, height - bottomMargin + 15 * scale), stringFormat);
                 if (data.Count > 0)
-                    graphics.DrawString(((float)data[^1].depth / 100).ToString("n2") + " m", font10, Brushes.Black, new PointF(leftMargin, height - bottomMargin + 30), stringFormat);
+                    graphics.DrawString(((float)data[^1].depth / 100).ToString("n2") + " m", font10, Brushes.Black, new PointF(leftMargin, height - bottomMargin + 30 * scale), stringFormat);
                 stringFormat.LineAlignment = StringAlignment.Far;
 
                 for (int i = 0; i < max; i += 10)
-                    graphics.DrawString(i.ToString(), font10, Brushes.Black, new PointF(ToPixelX(i) + 2, topMargin - tickSize), stringFormat);
+                    graphics.DrawString(i.ToString(), font10, Brushes.Black, new PointF(ToPixelX(i) + 2 * scale, topMargin - tickSize), stringFormat);
 
                 for (int i = 10; i < data.Count + extraRows + 1; i += 10)
                     graphics.DrawString((i / 10).ToString(), font10, Brushes.Black, new PointF(leftMargin - 3 * tickSize, ToPixelY(i) + tickSize * 2), stringFormat);
@@ -104,8 +115,13 @@ namespace Heiner
                 graphics.Flush();
             }
 
+            return bitmap;
+        }
+
+        private void DrawRammsonde(List<(int depth, int value)> data, int max)
+        {
             chartPictureBox.Image?.Dispose();
-            chartPictureBox.Image = bitmap;
+            chartPictureBox.Image = RenderBitmap(data, max, 1);
         }
 
         private void DrawRammsondeFromFile(object sender, EventArgs e)
@@ -121,8 +137,7 @@ namespace Heiner
                 return;
             }
 
-            List<(int depth, int value)> data = [];
-            int max = 0;
+            SortedDictionary<int, int> data = [];
             for (int lineNum = 0; lineNum < lines.Length; lineNum++)
             {
                 string[] parts = lines[lineNum].Split(' ');
@@ -131,10 +146,9 @@ namespace Heiner
                     MessageBox.Show($"Ungültiges Format in Zeile {lineNum + 1}:\n\"{lines[lineNum]}\"", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                if (value > max) max = value;
-                data.Add((depth, value));
+                data[depth] = value;
             }
-            DrawRammsonde(data, max);
+            _dataEntryForm.SetData(data);
         }
 
         private void DrawRammsondeFromData(SortedDictionary<int, int> source)
@@ -147,7 +161,14 @@ namespace Heiner
                     max = entry.Value;
                 data.Add((entry.Key, entry.Value));
             }
+            _renderData = data;
+            _renderMax = max;
             DrawRammsonde(data, max);
+        }
+
+        private void ChartTitleTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _dataEntryForm?.TriggerPlot();
         }
 
         private void NewDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -176,12 +197,36 @@ namespace Heiner
             }
         }
 
-        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SavePdfToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (File.Exists(openFileDialog.FileName))
+            using SaveFileDialog dlg = new()
             {
-                DrawRammsondeFromFile(sender, e);
-            }
+                DefaultExt = "pdf",
+                FileName = "save.pdf",
+                Filter = "PDF-Dateien (*.pdf)|*.pdf|Alle Dateien (*.*)|*.*",
+                InitialDirectory = Properties.Settings.Default.FilePath
+            };
+            if (dlg.ShowDialog() != DialogResult.OK) return;
+
+            using var document = new PdfDocument();
+            var page = document.AddPage();
+            page.Width = XUnit.FromMillimeter(210);
+            page.Height = XUnit.FromMillimeter(297);
+
+            // 12 pixels (2x) = 1 mm  =>  1 pixel = 1/12 mm = 72/(12*25.4) points
+            double pointsPerPixel = 72.0 / (12.0 * 25.4);
+
+            using var bitmap = RenderBitmap(_renderData, _renderMax, 2);
+            using var gfx = XGraphics.FromPdfPage(page);
+            using var ms = new MemoryStream();
+            bitmap.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            using var xImg = XImage.FromStream(ms);
+            gfx.DrawImage(xImg, 0, 0,
+                bitmap.Width * pointsPerPixel,
+                bitmap.Height * pointsPerPixel);
+
+            document.Save(dlg.FileName);
         }
 
         private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)

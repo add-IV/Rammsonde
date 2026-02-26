@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Runtime.Versioning;
 
@@ -104,6 +105,25 @@ namespace Heiner
             if (e.CloseReason == CloseReason.UserClosing)
                 e.Cancel = true;
         }
+
+        public void SetData(SortedDictionary<int, int> data)
+        {
+            entriesDataGridView.Rows.Clear();
+            _data.Clear();
+            foreach (var (depth, value) in data)
+            {
+                entriesDataGridView.Rows.Add(depth, value);
+                _data[depth] = value;
+            }
+            if (entriesDataGridView.Rows.Count > 0)
+                entriesDataGridView.FirstDisplayedScrollingRowIndex = entriesDataGridView.Rows.Count - 1;
+            depthTextBox.Text = _data.Count > 0
+                ? (_data.Keys.Last() + DepthStepCm).ToString()
+                : DepthStepCm.ToString();
+            PlotRequested?.Invoke(this, new MeasurementEventArgs(_data));
+        }
+
+        public void TriggerPlot() => PlotRequested?.Invoke(this, new MeasurementEventArgs(_data));
 
         public event EventHandler<MeasurementEventArgs> PlotRequested;
     }

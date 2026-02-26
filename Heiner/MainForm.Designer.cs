@@ -29,12 +29,14 @@ namespace Heiner
         private void InitializeComponent()
         {
             chartPictureBox = new System.Windows.Forms.PictureBox();
+            dataEntryPanel = new System.Windows.Forms.Panel();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             newDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             saveTxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            savePdfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             openFileDialog = new System.Windows.Forms.OpenFileDialog();
             saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -46,7 +48,7 @@ namespace Heiner
             // 
             // chartPictureBox
             // 
-            chartPictureBox.Location = new System.Drawing.Point(0, 28);
+            chartPictureBox.Location = new System.Drawing.Point(291, 28);
             chartPictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chartPictureBox.MinimumSize = new System.Drawing.Size(300, 300);
             chartPictureBox.Name = "chartPictureBox";
@@ -54,6 +56,13 @@ namespace Heiner
             chartPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             chartPictureBox.TabIndex = 0;
             chartPictureBox.TabStop = false;
+            // 
+            // dataEntryPanel
+            // 
+            dataEntryPanel.Location = new System.Drawing.Point(0, 24);
+            dataEntryPanel.Name = "dataEntryPanel";
+            dataEntryPanel.Size = new System.Drawing.Size(287, 511);
+            dataEntryPanel.TabIndex = 3;
             // 
             // menuStrip1
             // 
@@ -67,7 +76,7 @@ namespace Heiner
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { importToolStripMenuItem, newDataToolStripMenuItem, saveTxtToolStripMenuItem, saveToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { importToolStripMenuItem, newDataToolStripMenuItem, saveTxtToolStripMenuItem, saveToolStripMenuItem, savePdfToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             fileToolStripMenuItem.Text = "Datei";
@@ -100,6 +109,13 @@ namespace Heiner
             saveToolStripMenuItem.Text = "Speichern (PNG)";
             saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
             // 
+            // savePdfToolStripMenuItem
+            // 
+            savePdfToolStripMenuItem.Name = "savePdfToolStripMenuItem";
+            savePdfToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            savePdfToolStripMenuItem.Text = "Speichern (PDF)";
+            savePdfToolStripMenuItem.Click += SavePdfToolStripMenuItem_Click;
+            // 
             // optionsToolStripMenuItem
             // 
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -119,12 +135,13 @@ namespace Heiner
             // 
             // chartTitleTextBox
             // 
-            chartTitleTextBox.Location = new System.Drawing.Point(232, 0);
+            chartTitleTextBox.Location = new System.Drawing.Point(292, 0);
             chartTitleTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chartTitleTextBox.Name = "chartTitleTextBox";
-            chartTitleTextBox.Size = new System.Drawing.Size(32, 23);
+            chartTitleTextBox.Size = new System.Drawing.Size(51, 23);
             chartTitleTextBox.TabIndex = 2;
             chartTitleTextBox.Text = "R1";
+            chartTitleTextBox.TextChanged += ChartTitleTextBox_TextChanged;
             // 
             // openToolStripMenuItem
             // 
@@ -141,6 +158,7 @@ namespace Heiner
             ClientSize = new System.Drawing.Size(444, 377);
             Controls.Add(chartTitleTextBox);
             Controls.Add(chartPictureBox);
+            Controls.Add(dataEntryPanel);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -157,6 +175,7 @@ namespace Heiner
         }
         #endregion
 
+        private System.Windows.Forms.Panel dataEntryPanel;
         private System.Windows.Forms.PictureBox chartPictureBox;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
@@ -164,6 +183,7 @@ namespace Heiner
         private System.Windows.Forms.ToolStripMenuItem saveTxtToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem savePdfToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.TextBox chartTitleTextBox;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
