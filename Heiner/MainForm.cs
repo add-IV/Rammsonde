@@ -31,7 +31,7 @@ namespace Heiner
             if (Properties.Settings.Default.FilePath == "")
             {
                 Properties.Settings.Default.FilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                MessageBox.Show("Bitte Wähle ein Standartverzeichniss in den Optionen", "Verzeichniss setzen", MessageBoxButtons.OK);
+                MessageBox.Show("Bitte wähle ein Standardverzeichnis in den Optionen", "Verzeichnis setzen", MessageBoxButtons.OK);
             }
             saveFileDialog.InitialDirectory = Properties.Settings.Default.FilePath;
             openFileDialog.InitialDirectory = Properties.Settings.Default.FilePath;
@@ -69,6 +69,11 @@ namespace Heiner
             using (Font font12 = new("Tahoma", 12 * scale))
             using (Font font15 = new("Tahoma", 15 * scale))
             {
+                graphics.Clear(Color.White);
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                 graphics.DrawLine(pen, leftMargin, topMargin, leftMargin, ToPixelY(data.Count + extraRows));
                 graphics.DrawLine(pen, leftMargin, topMargin, ToPixelX(max), topMargin);
                 if (data.Count > 0)
@@ -91,13 +96,9 @@ namespace Heiner
                 for (int i = 0; i < max; i += 10)
                     graphics.DrawLine(pen, ToPixelX(i), topMargin - tickSize, ToPixelX(i), topMargin);
 
-                graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                 stringFormat.Alignment = StringAlignment.Far;
 
-                graphics.DrawString("Eindringungswiederstand", font12, Brushes.Black, new PointF(width - rightMargin, titleY), stringFormat);
+                graphics.DrawString("Eindringungswiderstand", font12, Brushes.Black, new PointF(width - rightMargin, titleY), stringFormat);
                 stringFormat.Alignment = StringAlignment.Center;
                 graphics.DrawString(chartTitleTextBox.Text, font15, Brushes.Black, new PointF(leftMargin, titleY), stringFormat);
                 stringFormat.LineAlignment = StringAlignment.Center;
@@ -125,7 +126,7 @@ namespace Heiner
             chartPictureBox.Image = RenderBitmap(data, max, 1);
         }
 
-        private void DrawRammsondeFromFile(object sender, EventArgs e)
+        private void DrawRammsondeFromFile()
         {
             string[] lines;
             try
@@ -186,7 +187,7 @@ namespace Heiner
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                DrawRammsondeFromFile(sender, e);
+                DrawRammsondeFromFile();
             }
         }
 
@@ -296,8 +297,8 @@ namespace Heiner
 
         private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsForm optionsForm = new();
-            optionsForm.Show();
+            using OptionsForm optionsForm = new();
+            optionsForm.ShowDialog();
         }
     }
 

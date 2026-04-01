@@ -72,6 +72,7 @@ namespace Heiner
                 entriesDataGridView.Rows.Clear();
                 _data.Clear();
                 depthTextBox.Text = DepthStepCm.ToString();
+                PlotRequested?.Invoke(this, new MeasurementEventArgs(_data));
             }
         }
 
