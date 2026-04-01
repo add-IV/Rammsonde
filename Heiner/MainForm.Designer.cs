@@ -31,23 +31,27 @@ namespace Heiner
             chartPictureBox = new System.Windows.Forms.PictureBox();
             dataEntryPanel = new System.Windows.Forms.Panel();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
-            fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            newDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            saveTxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            savePdfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            neuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            oeffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            speichernToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            exportierenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            exportPngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            exportPdfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            druckenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             openFileDialog = new System.Windows.Forms.OpenFileDialog();
             saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             chartTitleTextBox = new System.Windows.Forms.TextBox();
-            openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)chartPictureBox).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
-            // 
+            //
             // chartPictureBox
-            // 
+            //
             chartPictureBox.Location = new System.Drawing.Point(291, 28);
             chartPictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chartPictureBox.MinimumSize = new System.Drawing.Size(300, 300);
@@ -56,85 +60,128 @@ namespace Heiner
             chartPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             chartPictureBox.TabIndex = 0;
             chartPictureBox.TabStop = false;
-            // 
+            //
             // dataEntryPanel
-            // 
+            //
             dataEntryPanel.Location = new System.Drawing.Point(0, 24);
             dataEntryPanel.Name = "dataEntryPanel";
             dataEntryPanel.Size = new System.Drawing.Size(287, 511);
             dataEntryPanel.TabIndex = 3;
-            // 
+            //
             // menuStrip1
-            // 
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, optionsToolStripMenuItem });
+            //
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { dateiToolStripMenuItem, optionsToolStripMenuItem });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
             menuStrip1.Size = new System.Drawing.Size(444, 24);
             menuStrip1.TabIndex = 1;
             menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { importToolStripMenuItem, newDataToolStripMenuItem, saveTxtToolStripMenuItem, saveToolStripMenuItem, savePdfToolStripMenuItem });
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            fileToolStripMenuItem.Text = "Datei";
-            // 
-            // importToolStripMenuItem
-            // 
-            importToolStripMenuItem.Name = "importToolStripMenuItem";
-            importToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            importToolStripMenuItem.Text = "Öffnen";
-            importToolStripMenuItem.Click += ImportToolStripMenuItem_Click;
-            // 
-            // newDataToolStripMenuItem
-            // 
-            newDataToolStripMenuItem.Name = "newDataToolStripMenuItem";
-            newDataToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            newDataToolStripMenuItem.Text = "Neu";
-            newDataToolStripMenuItem.Click += NewDataToolStripMenuItem_Click;
-            // 
-            // saveTxtToolStripMenuItem
-            // 
-            saveTxtToolStripMenuItem.Name = "saveTxtToolStripMenuItem";
-            saveTxtToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            saveTxtToolStripMenuItem.Text = "Speichern (TXT)";
-            saveTxtToolStripMenuItem.Click += SaveTxtToolStripMenuItem_Click;
-            // 
-            // saveToolStripMenuItem
-            // 
-            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            saveToolStripMenuItem.Text = "Speichern (PNG)";
-            saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
-            // 
-            // savePdfToolStripMenuItem
-            // 
-            savePdfToolStripMenuItem.Name = "savePdfToolStripMenuItem";
-            savePdfToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            savePdfToolStripMenuItem.Text = "Speichern (PDF)";
-            savePdfToolStripMenuItem.Click += SavePdfToolStripMenuItem_Click;
-            // 
+            //
+            // dateiToolStripMenuItem
+            //
+            dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                neuToolStripMenuItem,
+                oeffnenToolStripMenuItem,
+                speichernToolStripMenuItem,
+                toolStripSeparator1,
+                exportierenToolStripMenuItem,
+                druckenToolStripMenuItem,
+                toolStripSeparator2,
+                beendenToolStripMenuItem
+            });
+            dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
+            dateiToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            dateiToolStripMenuItem.Text = "Datei";
+            //
+            // neuToolStripMenuItem
+            //
+            neuToolStripMenuItem.Name = "neuToolStripMenuItem";
+            neuToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            neuToolStripMenuItem.Text = "Neu";
+            neuToolStripMenuItem.Click += NewDataToolStripMenuItem_Click;
+            //
+            // oeffnenToolStripMenuItem
+            //
+            oeffnenToolStripMenuItem.Name = "oeffnenToolStripMenuItem";
+            oeffnenToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            oeffnenToolStripMenuItem.Text = "Öffnen";
+            oeffnenToolStripMenuItem.Click += ImportToolStripMenuItem_Click;
+            //
+            // speichernToolStripMenuItem
+            //
+            speichernToolStripMenuItem.Name = "speichernToolStripMenuItem";
+            speichernToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            speichernToolStripMenuItem.Text = "Speichern";
+            speichernToolStripMenuItem.Click += SaveTxtToolStripMenuItem_Click;
+            //
+            // toolStripSeparator1
+            //
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(158, 6);
+            //
+            // exportierenToolStripMenuItem
+            //
+            exportierenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                exportPngToolStripMenuItem,
+                exportPdfToolStripMenuItem
+            });
+            exportierenToolStripMenuItem.Name = "exportierenToolStripMenuItem";
+            exportierenToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            exportierenToolStripMenuItem.Text = "Exportieren";
+            //
+            // exportPngToolStripMenuItem
+            //
+            exportPngToolStripMenuItem.Name = "exportPngToolStripMenuItem";
+            exportPngToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            exportPngToolStripMenuItem.Text = "PNG";
+            exportPngToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
+            //
+            // exportPdfToolStripMenuItem
+            //
+            exportPdfToolStripMenuItem.Name = "exportPdfToolStripMenuItem";
+            exportPdfToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            exportPdfToolStripMenuItem.Text = "PDF";
+            exportPdfToolStripMenuItem.Click += SavePdfToolStripMenuItem_Click;
+            //
+            // druckenToolStripMenuItem
+            //
+            druckenToolStripMenuItem.Name = "druckenToolStripMenuItem";
+            druckenToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            druckenToolStripMenuItem.Text = "Drucken";
+            druckenToolStripMenuItem.Click += PrintToolStripMenuItem_Click;
+            //
+            // toolStripSeparator2
+            //
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(158, 6);
+            //
+            // beendenToolStripMenuItem
+            //
+            beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
+            beendenToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            beendenToolStripMenuItem.Text = "Beenden";
+            beendenToolStripMenuItem.Click += BeendenToolStripMenuItem_Click;
+            //
             // optionsToolStripMenuItem
-            // 
+            //
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             optionsToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             optionsToolStripMenuItem.Text = "Optionen";
             optionsToolStripMenuItem.Click += OptionsToolStripMenuItem_Click;
-            // 
+            //
             // openFileDialog
-            // 
+            //
             openFileDialog.FileName = "openFileDialog1";
-            // 
+            //
             // saveFileDialog
-            // 
+            //
             saveFileDialog.DefaultExt = "png";
             saveFileDialog.FileName = "save.png";
             saveFileDialog.Filter = "PNG-Dateien (*.png)|*.png|Alle Dateien (*.*)|*.*";
-            // 
+            //
             // chartTitleTextBox
-            // 
+            //
             chartTitleTextBox.Location = new System.Drawing.Point(292, 0);
             chartTitleTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chartTitleTextBox.Name = "chartTitleTextBox";
@@ -142,15 +189,9 @@ namespace Heiner
             chartTitleTextBox.TabIndex = 2;
             chartTitleTextBox.Text = "R1";
             chartTitleTextBox.TextChanged += ChartTitleTextBox_TextChanged;
-            // 
-            // openToolStripMenuItem
-            // 
-            openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            openToolStripMenuItem.Text = "Öffnen";
-            // 
+            //
             // MainForm
-            // 
+            //
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
@@ -178,16 +219,20 @@ namespace Heiner
         private System.Windows.Forms.Panel dataEntryPanel;
         private System.Windows.Forms.PictureBox chartPictureBox;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveTxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem neuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem oeffnenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem speichernToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem exportierenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportPngToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportPdfToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem druckenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem savePdfToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.TextBox chartTitleTextBox;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
     }
 }

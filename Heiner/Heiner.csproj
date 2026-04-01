@@ -5,6 +5,12 @@
     <SupportedOSPlatform>windows</SupportedOSPlatform>
     <UseWindowsForms>True</UseWindowsForms>
     <OutputType>WinExe</OutputType>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <AssemblyName Condition="'$(Configuration)' == 'Debug'">Heiner</AssemblyName>
+    <AssemblyName Condition="'$(Configuration)' != 'Debug'">Rammsonde</AssemblyName>
+    <ApplicationIcon>mu.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

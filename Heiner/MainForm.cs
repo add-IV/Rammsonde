@@ -27,6 +27,7 @@ namespace Heiner
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             if (Properties.Settings.Default.FilePath == "")
             {
                 Properties.Settings.Default.FilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -197,6 +198,30 @@ namespace Heiner
             }
         }
 
+        private void CreatePdf(string filePath)
+        {
+            using var document = new PdfDocument();
+            var page = document.AddPage();
+            page.Width = XUnit.FromMillimeter(210);
+            page.Height = XUnit.FromMillimeter(297);
+
+            // 12 pixels (2x) = 1 mm  =>  1 pixel = 1/12 mm = 72/(12*25.4) points
+            double pointsPerPixel = 72.0 / (12.0 * 25.4);
+            double margin = XUnit.FromMillimeter(15).Point;
+
+            using var bitmap = RenderBitmap(_renderData, _renderMax, 2);
+            using var gfx = XGraphics.FromPdfPage(page);
+            using var ms = new MemoryStream();
+            bitmap.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            using var xImg = XImage.FromStream(ms);
+            gfx.DrawImage(xImg, margin, margin,
+                bitmap.Width * pointsPerPixel,
+                bitmap.Height * pointsPerPixel);
+
+            document.Save(filePath);
+        }
+
         private void SavePdfToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using SaveFileDialog dlg = new()
@@ -207,26 +232,66 @@ namespace Heiner
                 InitialDirectory = Properties.Settings.Default.FilePath
             };
             if (dlg.ShowDialog() != DialogResult.OK) return;
+            CreatePdf(dlg.FileName);
+        }
 
-            using var document = new PdfDocument();
-            var page = document.AddPage();
-            page.Width = XUnit.FromMillimeter(210);
-            page.Height = XUnit.FromMillimeter(297);
+        private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string tempFile = Path.Combine(Path.GetTempPath(), $"heiner_print_{Guid.NewGuid()}.pdf");
+            try
+            {
+                CreatePdf(tempFile);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"PDF konnte nicht erstellt werden:\n{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            // 12 pixels (2x) = 1 mm  =>  1 pixel = 1/12 mm = 72/(12*25.4) points
-            double pointsPerPixel = 72.0 / (12.0 * 25.4);
+            Exception ex1, ex2, ex3;
 
-            using var bitmap = RenderBitmap(_renderData, _renderMax, 2);
-            using var gfx = XGraphics.FromPdfPage(page);
-            using var ms = new MemoryStream();
-            bitmap.Save(ms, ImageFormat.Png);
-            ms.Position = 0;
-            using var xImg = XImage.FromStream(ms);
-            gfx.DrawImage(xImg, 0, 0,
-                bitmap.Width * pointsPerPixel,
-                bitmap.Height * pointsPerPixel);
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tempFile)
+                {
+                    UseShellExecute = true,
+                    Verb = "print",
+                    WorkingDirectory = "."
+                });
+                return;
+            }
+            catch (Exception ex) { ex1 = ex; }
 
-            document.Save(dlg.FileName);
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tempFile)
+                {
+                    UseShellExecute = true,
+                    Verb = "print"
+                });
+                return;
+            }
+            catch (Exception ex) { ex2 = ex; }
+
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tempFile)
+                {
+                    UseShellExecute = true
+                });
+                return;
+            }
+            catch (Exception ex) { ex3 = ex; }
+
+            File.Delete(tempFile);
+            MessageBox.Show(
+                $"ShellExecute (print, .):\n{ex1}\n\nShellExecute (print):\n{ex2}\n\nShellExecute (open):\n{ex3}",
+                "Drucken fehlgeschlagen", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void BeendenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)

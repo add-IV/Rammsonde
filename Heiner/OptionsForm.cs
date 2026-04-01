@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.Versioning;
 
@@ -14,6 +15,7 @@ namespace Heiner
 
         private void OptionsForm_Load(object sender, EventArgs e)
         {
+            Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             txtFilePath.Text = Properties.Settings.Default.FilePath;
             txtMinX.Text = Properties.Settings.Default.MinX.ToString();
         }
