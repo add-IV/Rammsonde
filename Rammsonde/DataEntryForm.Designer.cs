@@ -1,4 +1,4 @@
-namespace Heiner
+namespace Rammsonde
 {
     partial class DataEntryForm
     {

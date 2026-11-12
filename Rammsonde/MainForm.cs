@@ -10,7 +10,7 @@ using System.Runtime.Versioning;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 
-namespace Heiner
+namespace Rammsonde
 {
     [SupportedOSPlatform("windows")]
     public partial class MainForm : Form

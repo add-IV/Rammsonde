@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.Versioning;
 
-namespace Heiner
+namespace Rammsonde
 {
     [SupportedOSPlatform("windows")]
     public partial class OptionsForm : Form

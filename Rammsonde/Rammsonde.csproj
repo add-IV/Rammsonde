@@ -6,10 +6,8 @@
     <UseWindowsForms>True</UseWindowsForms>
     <OutputType>WinExe</OutputType>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <SelfContained>true</SelfContained>
-    <PublishSingleFile>true</PublishSingleFile>
-    <AssemblyName Condition="'$(Configuration)' == 'Debug'">Heiner</AssemblyName>
-    <AssemblyName Condition="'$(Configuration)' != 'Debug'">Rammsonde</AssemblyName>
+    <SelfContained>false</SelfContained>
+    <AssemblyName>Rammsonde</AssemblyName>
     <ApplicationIcon>mu.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -31,5 +29,19 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+
+
+  <Target Name="RemoveUnusedPublishFiles" AfterTargets="Publish">
+    <ItemGroup>
+      <UnusedPublishFiles Include="$(PublishDir)PdfSharp.BarCodes.dll" />
+      <UnusedPublishFiles Include="$(PublishDir)PdfSharp.Charting.dll" />
+      <UnusedPublishFiles Include="$(PublishDir)PdfSharp.Cryptography.dll" />
+      <UnusedPublishFiles Include="$(PublishDir)PdfSharp.Quality.dll" />
+      <UnusedPublishFiles Include="$(PublishDir)PdfSharp.Snippets.dll" />
+      <UnusedPublishFiles Include="$(PublishDir)PdfSharp.WPFonts.dll" />
+      <UnusedPublishFiles Include="$(PublishDir)$(AssemblyName).pdb" />
+    </ItemGroup>
+    <Delete Files="@(UnusedPublishFiles)" />
+  </Target>
 
 </Project>
