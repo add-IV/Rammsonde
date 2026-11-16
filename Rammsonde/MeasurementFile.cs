@@ -7,7 +7,7 @@ namespace Rammsonde
 {
     /// <summary>
     /// Lesen und Schreiben des Messdatenformats: eine Zeile pro Messpunkt,
-    /// "&lt;Tiefe_cm&gt; &lt;Schläge_bzw_Sekunden&gt;", durch Leerzeichen getrennt.
+    /// "&lt;Tiefe_cm&gt; &lt;Sekunden&gt;", durch Leerzeichen getrennt.
     /// </summary>
     public static class MeasurementFile
     {
