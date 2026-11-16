@@ -3,8 +3,6 @@
 [![Build](https://github.com/add-IV/Rammsonde/actions/workflows/build.yml/badge.svg)](https://github.com/add-IV/Rammsonde/actions/workflows/build.yml)
 ![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)
 ![Platform: Windows](https://img.shields.io/badge/platform-Windows-0078D6)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-
 A Windows desktop tool for recording and plotting **dynamic probing** data (German: *Rammsondierung*). This is a soil investigation method in geotechnical engineering: a probe is driven into the ground and the time in seconds it takes to advance each 10 cm is recorded as the penetration resistance. The resulting step diagram shows how firm the soil is at each depth.
 
 The app replaces drawing these diagrams by hand. You type in readings as they come in from the field, the chart updates live, and you can export a print-ready A4 PDF for the report.
@@ -94,4 +92,4 @@ samples/                 # Example measurement file
 
 ## License
 
-[MIT](LICENSE)
+Copyright © 2026 add-IV. All rights reserved. The source code is available for viewing only; see [LICENSE](LICENSE).
