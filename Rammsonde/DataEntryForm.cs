@@ -78,11 +78,15 @@ namespace Rammsonde
 
         public void PromptSaveTxt()
         {
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+            try
             {
-                using var writer = new StreamWriter(saveFileDialog.FileName);
-                foreach (DataGridViewRow row in entriesDataGridView.Rows)
-                    writer.WriteLine(row.Cells[0].Value + " " + row.Cells[1].Value);
+                MeasurementFile.Save(saveFileDialog.FileName, _data);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                MessageBox.Show($"Datei konnte nicht gespeichert werden:\n{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -128,27 +128,20 @@ namespace Rammsonde
 
         private void DrawRammsondeFromFile()
         {
-            string[] lines;
+            SortedDictionary<int, int> data;
             try
             {
-                lines = File.ReadAllLines(openFileDialog.FileName);
+                data = MeasurementFile.Load(openFileDialog.FileName);
             }
-            catch (Exception ex)
+            catch (FormatException ex)
+            {
+                MessageBox.Show(ex.Message, "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
                 MessageBox.Show($"Datei konnte nicht gelesen werden:\n{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }
-
-            SortedDictionary<int, int> data = [];
-            for (int lineNum = 0; lineNum < lines.Length; lineNum++)
-            {
-                string[] parts = lines[lineNum].Split(' ');
-                if (parts.Length < 2 || !int.TryParse(parts[0], out int depth) || !int.TryParse(parts[1], out int value))
-                {
-                    MessageBox.Show($"Ungültiges Format in Zeile {lineNum + 1}:\n\"{lines[lineNum]}\"", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                data[depth] = value;
             }
             _dataEntryForm.SetData(data);
         }
@@ -193,9 +186,15 @@ namespace Rammsonde
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (chartPictureBox.Image == null || saveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+            try
             {
                 chartPictureBox.Image.Save(saveFileDialog.FileName, ImageFormat.Png);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"PNG konnte nicht gespeichert werden:\n{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -233,12 +232,19 @@ namespace Rammsonde
                 InitialDirectory = Properties.Settings.Default.FilePath
             };
             if (dlg.ShowDialog() != DialogResult.OK) return;
-            CreatePdf(dlg.FileName);
+            try
+            {
+                CreatePdf(dlg.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"PDF konnte nicht erstellt werden:\n{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string tempFile = Path.Combine(Path.GetTempPath(), $"heiner_print_{Guid.NewGuid()}.pdf");
+            string tempFile = Path.Combine(Path.GetTempPath(), $"rammsonde_print_{Guid.NewGuid()}.pdf");
             try
             {
                 CreatePdf(tempFile);
@@ -249,44 +255,29 @@ namespace Rammsonde
                 return;
             }
 
-            Exception ex1, ex2, ex3;
-
-            try
+            // Nicht jeder PDF-Viewer registriert das "print"-Verb. Daher erst direkt drucken,
+            // ansonsten die PDF im Standardprogramm öffnen, damit der Nutzer selbst drucken kann.
+            var attempts = new[]
             {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tempFile)
-                {
-                    UseShellExecute = true,
-                    Verb = "print",
-                    WorkingDirectory = "."
-                });
-                return;
-            }
-            catch (Exception ex) { ex1 = ex; }
+                new System.Diagnostics.ProcessStartInfo(tempFile) { UseShellExecute = true, Verb = "print", WorkingDirectory = "." },
+                new System.Diagnostics.ProcessStartInfo(tempFile) { UseShellExecute = true, Verb = "print" },
+                new System.Diagnostics.ProcessStartInfo(tempFile) { UseShellExecute = true },
+            };
 
-            try
+            Exception lastError = null;
+            foreach (var startInfo in attempts)
             {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tempFile)
+                try
                 {
-                    UseShellExecute = true,
-                    Verb = "print"
-                });
-                return;
+                    System.Diagnostics.Process.Start(startInfo);
+                    return;
+                }
+                catch (Exception ex) { lastError = ex; }
             }
-            catch (Exception ex) { ex2 = ex; }
-
-            try
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tempFile)
-                {
-                    UseShellExecute = true
-                });
-                return;
-            }
-            catch (Exception ex) { ex3 = ex; }
 
             File.Delete(tempFile);
             MessageBox.Show(
-                $"ShellExecute (print, .):\n{ex1}\n\nShellExecute (print):\n{ex2}\n\nShellExecute (open):\n{ex3}",
+                $"Es wurde kein Programm zum Drucken oder Öffnen von PDF-Dateien gefunden.\n\n{lastError?.Message}",
                 "Drucken fehlgeschlagen", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
